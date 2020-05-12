@@ -1010,25 +1010,483 @@ public class Main {
 
     /* Block 6 */
 
-    public static void TASK_60() {
+    public static void TASK_60(int n) {
+        if (n<2){
+            System.out.println("1");
+            return;
+        }
+
+        int [][] numbers = new int[n][n];
+        for (int i=0; i<n;i++){
+            for (int j = 0; j<n; j++){
+                numbers[i][j]=0;
+            }
+        }
+
+        int count = 1, buf = 1;
+        numbers[0][0]=buf;
+
+        for (int i=1; i<n;i++){
+            numbers[i][0]= buf;
+            for (int j = 0; j<count; j++){
+                numbers[i][j+1]=numbers[i][j]+numbers[i-1][j];
+                buf = numbers[i][j]+numbers[i-1][j];
+            }
+            count++;
+        }
+
+        for (int i = 0; i < n; i++){
+            System.out.println(Arrays.toString(numbers[i]));
+        }
+        System.out.println(numbers[n-1][n-1]);
     }
-    public static void TASK_61() {
+    public static String TASK_61_Word(String array) {
+        boolean checkUpCase = false;
+        String output = "";
+        String start = "";
+        String end = "";
+        int index = 0;
+
+        if (array.charAt(0)=='a' || array.charAt(0)=='A'
+                || array.charAt(0)=='e' || array.charAt(0)=='E'
+                || array.charAt(0)=='i' || array.charAt(0)=='I'
+                || array.charAt(0)=='o' || array.charAt(0)=='O'
+                || array.charAt(0)=='u' || array.charAt(0)=='U'){
+            output = array + "yay";
+        }
+        else{
+            if (array.charAt(0)>=65 && array.charAt(0)<=90){
+                checkUpCase = true;
+            }
+
+            for (int i = 0; i < array.length(); i++){
+                if (array.charAt(i)=='a' || array.charAt(i)=='A'
+                        || array.charAt(i)=='e' || array.charAt(i)=='E'
+                        || array.charAt(i)=='i' || array.charAt(i)=='I'
+                        || array.charAt(i)=='o' || array.charAt(i)=='O'
+                        || array.charAt(i)=='u' || array.charAt(i)=='U') {
+                   break;
+                }
+                else{
+                    end += (char)array.charAt(i);
+                    //System.out.println(end);
+                    index = i;
+                }
+            }
+
+            output = array.substring(index+1) + end;
+            output = output.toLowerCase() + "ay";
+            //System.out.println(output);
+
+            if (checkUpCase == true){
+                start = "";
+                start += (char)output.charAt(0);
+                start = start.toUpperCase();
+
+                end = output.substring(1);
+
+                output = "";
+                output = start + end;
+            }
+        }
+
+        return output;
+        /*
+                String output = "";
+        if (array.charAt(0)=='a' || array.charAt(0)=='A'
+                || array.charAt(0)=='e' || array.charAt(0)=='E'
+                || array.charAt(0)=='i' || array.charAt(0)=='I'
+                || array.charAt(0)=='o' || array.charAt(0)=='O'
+                || array.charAt(0)=='u' || array.charAt(0)=='U'){
+            output = array + "yay";
+        }
+        else{
+            if (array.charAt(0)>=65 && array.charAt(0)<=90){
+                output = array.substring(1,2).toUpperCase() + array.substring(2) + array.substring(0,1).toLowerCase() + "ay";
+            }
+            else{
+                output = array.substring(1) + array.substring(0,1).toLowerCase() + "ay";
+            }
+        }
+        return output;
+         */
     }
-    public static void TASK_62() {
+    public static String TASK_61_Sentence(String array) {
+        String [] arrays = array.split(" ");
+        String output = "";
+        String print = "";
+        for (int i = 0; i < arrays.length; i++){
+            if ((arrays[i].charAt(arrays[i].length()-1)<65 || arrays[i].charAt(arrays[i].length()-1)>90) &&
+                    (arrays[i].charAt(arrays[i].length()-1)<97 || arrays[i].charAt(arrays[i].length()-1)>122)){
+                output = arrays[i].substring(0,arrays[i].length()-1);
+                //System.out.println(output);
+                output = TASK_61_Word(output);
+                output += arrays[i].charAt(arrays[i].length()-1);
+            }
+            else{
+                output = arrays[i].substring(0);
+                //System.out.println(output);
+                output = TASK_61_Word(output);
+            }
+            print += output + " ";
+        }
+        return print;
     }
-    public static void TASK_63() {
+    public static void TASK_62(String array) {
+        String newArray = "";
+        for (int i = 0; i <array.length(); i++){
+            if ((array.charAt(i) >= 48 && array.charAt(i) <= 57) || (array.charAt(i) == 44)){
+                newArray += (char)array.charAt(i);
+            }
+        }
+        System.out.println(array);
+        String [] numbers = newArray.split(",");
+
+        int r =0;
+        int g = 0;
+        int b =0;
+        double a = 0;
+
+        if (numbers.length == 3){
+            for (int i = 0; i<numbers.length;i++){
+                if(numbers[i].length()==0){
+                    System.out.println("Error");
+                    return;
+                }
+            }
+            r = Integer.parseInt(numbers[0]);
+            g = Integer.parseInt(numbers[1]);
+            b = Integer.parseInt(numbers[2]);
+            if (r>255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0){
+                System.out.println("Error");
+                return;
+            }
+            System.out.println("True");
+        }
+        if (numbers.length == 4){
+            String rgba = "";
+            rgba += numbers[3].charAt(0);
+            for (int i = 0; i<numbers.length;i++){
+                if(numbers[i].length()==0){
+                    System.out.println("Error");
+                    return;
+                }
+            }
+            r = Integer.parseInt(numbers[0]);
+            g = Integer.parseInt(numbers[1]);
+            b= Integer.parseInt(numbers[2]);
+            a = Double.parseDouble(rgba);
+            if (r>255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0 || a > 1 || a < 0){
+                System.out.println("Error");
+                return;
+            }
+            System.out.println("True");
+        }
     }
-    public static void TASK_64() {
+    public static String TASK_63(String array) {
+        String output = "";
+        int i = 0, q = 0;
+
+        while (array.charAt(i) != '=') {
+            i++;
+        }
+        q = i - 1;
+        String str = array.substring(i-1);
+        String[] strs = str.split("&");
+
+        for (i = 0; i < strs.length; i++) {
+            for (int j = i + 1; j < strs.length; j++) {
+                if (strs[i] != "" && strs[j] != "") {
+                    if (strs[i].charAt(0) == strs[j].charAt(0)) {
+                        strs[i] = strs[j];
+                        strs[j] = "";
+                    }
+                }
+            }
+        }
+
+        output += array.substring(0, q);
+        for (i = 0; i < strs.length - 1; i++){
+            output += strs[i] + "&";
+        }
+        while (output.charAt(output.length() - 1) == '&'){
+            output = output.substring(0, output.length() - 1);
+        }
+
+        return output;
     }
-    public static void TASK_65() {
+    public static void TASK_64(String array) {
+        String [] arrays = array.split(" ");
+        String temp = "";
+
+        for (int i = 0; i < arrays.length; i++){
+            temp = "";
+            for (int j = 0; j < arrays[i].length(); j++){
+                if ((arrays[i].charAt(j)>=65 && arrays[i].charAt(j)<=90) || (arrays[i].charAt(j)>=97 && arrays[i].charAt(j)<=122)){
+                    temp += (char)arrays[i].charAt(j);
+                }
+            }
+            arrays[i] = "";
+            arrays[i] += temp;
+        }
+
+        temp = "";
+        for (int i = arrays.length-1; i > 0; i--){
+            for (int j = 0; j < i; j++){
+                if (arrays[j].length() > arrays[j+1].length()){
+                    temp = arrays[j];
+                    arrays[j] = arrays[j+1];
+                    arrays[j+1] = temp;
+                }
+            }
+        }
+
+        if (arrays.length>3) {
+            Vector<String> output = new Vector<String>();
+            int maxLength = arrays[arrays.length - 1].length();
+            for (int i = arrays.length; i >= 0; i--) {
+                for (int j = 0; j < arrays.length; j++) {
+                    if (arrays[j].length() == maxLength) {
+                        output.add(arrays[j]);
+                    }
+                }
+                maxLength--;
+            }
+
+            //System.out.println(output);
+            String [] print = new String[3];
+            String word = "";
+            for (int i = 0; i < 3; i++){
+                word = "";
+                word = output.get(i);
+                word = word.toLowerCase();
+                print[i] = "#"+ word;
+            }
+            System.out.println(Arrays.toString(print));
+        }
+        if (arrays.length == 3){
+            String [] print = new String[3];
+            String word = "";
+            if (arrays[0].length() == arrays[1].length() && arrays[0].length() == arrays[2].length()){
+                word = arrays[0].toLowerCase();
+                print[0] = "#" + word;
+                word = arrays[1].toLowerCase();
+                print[1] = "#" + word;
+                word = arrays[2].toLowerCase();
+                print[2] = "#" + word;
+            }
+            if (arrays[0].length() == arrays[1].length() && arrays[0].length() != arrays[2].length()){
+                word = arrays[2].toLowerCase();
+                print[0] = "#" + word;
+                word = arrays[0].toLowerCase();
+                print[1] = "#" + word;
+                word = arrays[1].toLowerCase();
+                print[2] = "#" + word;
+            }
+            if (arrays[0].length() != arrays[1].length() && arrays[1].length() != arrays[2].length()){
+                word = arrays[2].toLowerCase();
+                print[0] = "#" + word;
+                word = arrays[1].toLowerCase();
+                print[1] = "#" + word;
+                word = arrays[0].toLowerCase();
+                print[1] = "#" + word;
+
+            }
+            System.out.println(Arrays.toString(print));
+        }
+        if (arrays.length == 2){
+            String [] print = new String[2];
+            String word = "";
+            if (arrays[0].length() != arrays[1].length()){
+                word = arrays[1].toLowerCase();
+                print[0] = "#" + word;
+                word = arrays[0].toLowerCase();
+                print[1] = "#" + word;
+            }
+            else{
+                word = arrays[10].toLowerCase();
+                print[0] = "#" + word;
+                word = arrays[1].toLowerCase();
+                print[1] = "#" + word;
+            }
+            System.out.println(Arrays.toString(print));
+        }
+        if (arrays.length == 1){
+            String [] print = new String[1];
+            String word = arrays[0].toLowerCase();
+            print [0] = "#" + word;
+            System.out.println(Arrays.toString(print));
+        }
     }
-    public static void TASK_66() {
+    public static void TASK_65(int n) {
+        int MAX = 2000;
+        Vector<Integer> arr = new Vector<Integer>();
+        // Функция для вычисления номера ulam
+        // толкаем первые 2 два члена последовательности
+        // в массиве
+        // для дальнейшего расчета
+        arr.add(1);
+        arr.add(2);
+        // цикл для генерации числа Улама
+        for (int i = 3; i < MAX; i++) {
+            int count = 0;
+            // пройти массив и проверить,
+            // я могу быть представлен как сумма
+            // два разных элемента массива
+            for (int j = 0; j < arr.size() - 1; j++) {
+                for (int k = j + 1; k < arr.size(); k++) {
+                    if (arr.get(j) + arr.get(k) == i) {
+                        count++;
+                    }
+                    if (count > 1) {
+                        break;
+                    }
+                }
+                if (count > 1) {
+                    break;
+                }
+            }
+            // Если число равно 2, это означает
+            // я могу быть представлен как сумма
+            // два разных члена последовательности
+            if (count == 1) {
+                // я номер улама
+                arr.add(i);
+            }
+        }
+        // печатаем n-е число Улама
+        System.out.println(arr.get(n - 1));
+        /*
+        System.out.print(n + " ");
+        while (n != 1) {
+            if (n % 2 == 0) {
+                n = n / 2;
+
+            }
+            if (n % 2 != 0) {
+                n = 3 * n + 1;
+            }
+            System.out.print(n + " ");
+        }
+        return n;
+        */
     }
-    public static void TASK_67() {
+    public static void TASK_66(String array) {
+        boolean check = false;
+        String output = "";
+        for (int k = 0; k < array.length()-1; k++) {
+            String subArray = "";
+            subArray += (char)array.charAt(k);
+            for (int i = k + 1; i < array.length(); i++) {
+                for (int j = 0; j < subArray.length(); j++) {
+                    if (array.charAt(i) == subArray.charAt(j)) {
+                        //System.out.println(subArray);
+                        check = true;
+                        break;
+                    }
+                }
+                if (check != true) {
+                    subArray += (char) array.charAt(i);
+                }
+                else{
+                    check = false;
+                }
+            }
+            if (subArray.length()>output.length()){
+                output = "";
+                output += subArray;
+            }
+        }
+        System.out.println(output);
     }
-    public static void TASK_68() {
+    public static void TASK_67(int digit) {
+        if (digit > 3999){
+            return;
+        }
+        int [] numbers = {1,2,3,4,5,6,7,8,9,10,20,30,40,50,90,100,200,300,400,500,900,1000,2000,3000};
+        String [] arrays = {"I","II","III","IV","V","VI","VII","VIII","IX","X","XX","XXX","XL","L",
+                "XC","C","CC","CCC","CD","D","CM","M","MM","MMM"};
+        String output = "";
+        for (int i = numbers.length-1; i >= 0; i--){
+            if (numbers[i]<=digit){
+                digit=digit-numbers[i];
+                output += arrays[i];
+            }
+        }
+        System.out.println(output);
     }
-    public static void TASK_69() {
+    public static boolean TASK_68(String array) {
+        String [] numbers = array.split("=");
+        int [] output = new int [numbers.length];
+
+        for (int i = 0; i < numbers.length; i++){
+            String replace = numbers[i].trim();
+            numbers[i] = "";
+            numbers[i] = replace;
+        }
+
+        for (int i = 0; i < numbers.length; i++){
+            String [] block = numbers[i].split(" ");
+            int operation = 0;
+            //System.out.println(Arrays.toString(block));
+
+            if (block.length==1){
+                operation = Integer.parseInt(block[0]);
+            }
+            else{
+                char oper = block[1].charAt(0);
+                //System.out.println(oper);
+                if ((int)oper=='+') {
+                    operation = Integer.parseInt(block[0]) + Integer.parseInt(block[2]);
+                }
+                if ((int)oper=='-') {
+                    operation = Integer.parseInt(block[0]) - Integer.parseInt(block[2]);
+                }
+                if ((int)oper=='*') {
+                    operation = Integer.parseInt(block[0]) * Integer.parseInt(block[2]);
+                }
+                if ((int)oper=='/') {
+                    operation = Integer.parseInt(block[0]) / Integer.parseInt(block[2]);
+                }
+            }
+            output[i]=operation;
+        }
+        int check = output[0];
+        for (int i = 0; i < output.length; i++){
+            if (output[i] != check){
+                return false;
+            }
+        }
+        // System.out.println(Arrays.toString(output));
+        return true;
+    }
+    public static boolean TASK_69(int digit) {
+        String array = "";
+        String numbers = "";
+        int one = 0, two = 0, sum = 0;
+
+        array += digit;
+        if (array.length() % 2 != 0){
+            return false;
+        }
+
+        while (array.length() >= 2) {
+            for (int i = 0; i < array.length() / 2; i++) {
+                one = 9 - (57 - array.charAt(i * 2));
+                two = 9 - (57 - array.charAt((i * 2) + 1));
+                sum = one + two;
+                numbers += sum;
+            }
+            if (numbers.length() >= 2) {
+                array = numbers;
+            }
+            else{
+                break;
+            }
+            numbers = "";
+        }
+        System.out.println(array);
+        return array.length()==2 && (array.charAt(0)==array.charAt(1));
     }
 
     public static void main(String[] args) {
@@ -1261,30 +1719,63 @@ public class Main {
                     key = buf % 10;
                     switch (key) {
                         case (0):
+                            TASK_60(5);
                             break;
                         case (1):
+                            System.out.println(TASK_61_Word("hello"));
+                            System.out.println(TASK_61_Word("hhhello"));
+                            System.out.println(TASK_61_Word("Hello"));
+                            System.out.println(TASK_61_Word("ello"));
+                            System.out.println(TASK_61_Word("Ello"));
+                            System.out.println(TASK_61_Sentence("I like to eat honey waffles."));
+                            System.out.println(TASK_61_Sentence("Do you think it is going to rain today?"));
                             break;
                         case (2):
+                            TASK_62("rgb(0,0,0)");
+                            TASK_62("rgb(0,,0)");
+                            TASK_62("rgb(255,256,255)");
+                            TASK_62("rgba(0,0,0,0.123456789)");
                             break;
                         case (3):
+                            System.out.println(TASK_63("https://edabit.com?a=1&b=2&a=2"));
                             break;
                         case (4):
+                            TASK_64("How the Avocado Became the Fruit of the Global Trade");
+                            TASK_64("Why You Will Probably Pay More for Your Christmas Tree This Year");
+                            TASK_64("Hey Parents, Surprise, Fruit Juice Is Not Fruit");
+                            TASK_64("Visualizing Science");
+                            TASK_64("How the Avocado Became");
+                            TASK_64("How the Avocado");
                             break;
                         case (5):
+                            TASK_65(4);
+                            TASK_65(9);
+                            TASK_65(206);
                             break;
                         case (6):
+                            TASK_66("abcabcbb");
+                            TASK_66("abcabcdeab");
                             break;
                         case (7):
+                            TASK_67(10);
+                            TASK_67(555);
+                            TASK_67(1125);
                             break;
                         case (8):
+                            System.out.println(TASK_68("6 * 4 = 24"));
+                            System.out.println(TASK_68("18 / 17 = 2"));
+                            System.out.println(TASK_68("16 * 10 = 160 = 14 + 120 = 5"));
                             break;
                         case (9):
+                            System.out.println(TASK_69( 11211230));
+                            System.out.println(TASK_69( 13001120));
+                            System.out.println(TASK_69( 23336014));
+                            System.out.println(TASK_69( 123312));
+                            System.out.println(TASK_69( 11));
                             break;
                     }
                     break;
             }
-
         } while (key != 100);
-
     }
 }
